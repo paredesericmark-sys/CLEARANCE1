@@ -1,0 +1,296 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body.login-page,
+body.register-page {
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    background: url('southern.jpg') no-repeat center center/cover;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.page-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.login-container {
+    position: relative;
+    z-index: 2;
+    width: 610px;
+    max-width: 92%;
+    min-height: 560px;
+    margin: 60px auto;
+    padding: 26px 60px 40px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 30px;
+    backdrop-filter: blur(6px);
+}
+
+.help-icon {
+    position: absolute;
+    right: 22px;
+    top: 18px;
+    width: 36px;
+    height: 36px;
+    border: 3px solid #111;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #111;
+}
+
+.login-title,
+.register-title {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 800;
+    color: #000;
+    margin-top: 12px;
+    margin-bottom: 32px;
+}
+
+.input-line {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-line input {
+    width: 100%;
+    max-width: 420px;
+    height: 45px;
+    margin: 0 auto;
+    display: block;
+    font-size: 16px;
+    padding: 0 40px 0 12px; /* ❗ space sa kanan */
+    border-radius: 10px;
+}
+
+.input-line label {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 6px;
+    color: #111;
+}
+
+.password-field {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+}
+.eye-icon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    font-size: 18px; /* sakto lang */
+    cursor: pointer;
+    line-height: 1;
+}
+
+.login-btn {
+    width: 260px;
+    height: 50px;
+    margin: 20px auto 0;
+    display: block;
+    border-radius: 30px;
+    background: #03c85e;
+    color: #111;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+}
+.register-btn {
+    width: 220px;
+    height: 48px;
+    border: 2px solid #111;
+    border-radius: 25px;
+    background: #03c85e;
+    color: #111;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 0;
+}
+
+
+
+.forgot-text,
+.bottom-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+}
+
+.bottom-text a {
+    color: #f5f5f5;
+    text-decoration: none;
+}
+
+.register-container {
+    position: relative;
+    z-index: 2;
+    width: 780px;
+    max-width: 94%;
+    margin: 35px auto;
+    padding: 28px 40px 34px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 34px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.register-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 35px;
+    row-gap: 12px;
+    align-items: start;
+}
+.role-select {
+    width: 100%;
+    height: 45px;
+    border: 3px solid #111;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.92);
+    outline: none;
+    padding: 0 12px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+.register-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 28px;
+}
+.back-login {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+    background: rgba(255, 255, 255, 0.90);
+    padding: 12px 22px;
+    border-radius: 12px;
+    border: 2px solid #111;
+    min-width: 160px;
+    height: 48px;
+}
+.register-title {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 14px;
+}
+.back-login:hover {
+    background: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .register-grid {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+
+    .full-left {
+        grid-column: auto;
+    }
+
+    .register-bottom {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .back-login,
+    .signup-btn {
+        width: 100%;
+    }
+}
+
+.field-group label {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    margin: 6px 0 6px 4px;
+}
+
+.field-group input {
+    width: 100%;
+    height: 45px;
+    border: 3px solid #111;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.92);
+    outline: none;
+    padding: 0 12px;
+    font-size: 16px;
+}
+
+.full-left {
+    grid-column: 1 / 2;
+}
+
+.role-options {
+    display: flex;
+    flex-direction: column;
+    width: 235px;
+}
+
+.role-btn {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+.role-btn input {
+    position: absolute;
+    opacity: 0;
+}
+
+.role-btn span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    border: 2.5px solid #111;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.90);
+    font-size: 18px;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 2px;
+}
+
+.role-btn input:checked + span {
+    background: #03c85e;
+}
+
+.signup-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 42px;
+    padding-right: 22px;
+}
+
+.signup-btn {
+    width: 250px;
+}
