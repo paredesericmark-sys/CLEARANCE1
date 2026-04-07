@@ -2,25 +2,51 @@
 session_start();
 include("../config/db.php");
 
-$email = $_POST['email'];
+$email = trim($_POST['email']);
 $password = md5($_POST['password']);
 
-$q = $conn->query("SELECT * FROM users WHERE email='$email' AND password='$password'");
-$user = $q->fetch_assoc();
+/* check fixed admin first */
+$adminStmt = $conn->prepare("SELECT * FROM admin WHERE email = ? AND password = ?");
+$adminStmt->bind_param("ss", $email, $password);
+$adminStmt->execute();
+$adminResult = $adminStmt->get_result();
 
-if($user){
-    $_SESSION['id'] = $user['id'];
+if ($adminResult->num_rows > 0) {
+    $admin = $adminResult->fetch_assoc();
+
+    $_SESSION['user_id'] = $admin['id'];
+    $_SESSION['name'] = $admin['name'];
+    $_SESSION['role'] = 'admin';
+
+    header("Location: ../dashboard/admin.php");
+    exit;
+}
+
+/* check registered users */
+$userStmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND password = ?");
+$userStmt->bind_param("ss", $email, $password);
+$userStmt->execute();
+$userResult = $userStmt->get_result();
+
+if ($userResult->num_rows > 0) {
+    $user = $userResult->fetch_assoc();
+
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['name'] = $user['firstname'] . ' ' . $user['lastname'];
     $_SESSION['role'] = $user['role'];
-    $_SESSION['name'] = $user['name'];
+    $_SESSION['course'] = $user['course'];
 
-    if($user['role'] == 'admin'){
-        header("Location: ../dashboard/admin.php");
-    } elseif($user['role'] == 'teacher'){
-        header("Location: ../dashboard/teacher.php");
-    } else {
+    if ($user['role'] === 'student') {
         header("Location: ../dashboard/student.php");
+        exit;
     }
 
-} else {
-    echo "Login Failed";
+    if ($user['role'] === 'teacher') {
+        header("Location: ../dashboard/teacher.php");
+        exit;
+    }
 }
+
+echo "Invalid email or password.";
+?>
+

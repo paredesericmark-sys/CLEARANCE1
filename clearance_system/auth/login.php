@@ -1,54 +1,40 @@
-<?php
-session_start();
-?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+    <title>Login</title>
     <link rel="stylesheet" href="../assets/style.css">
 </head>
-<body class="login-page">
+<body class="bg-page">
 
-    <div class="page-overlay"></div>
+    <div class="overlay-box login-box">
+        <h1 class="form-title">LOG IN</h1>
 
-    <div class="login-container">
-        <div class="help-icon">?</div>
-
-        <h1 class="login-title">LOG IN</h1>
-
-        <form action="process_login.php" method="POST" class="login-form">
-            <div class="input-line">
-                <input type="email" name="email" required>
-                <label>Username</label>
+        <form action="process_login.php" method="POST" class="form-area">
+            <div class="input-group">
+                <input type="email" name="email" placeholder=" " required>
+                <label>Email</label>
             </div>
 
-          <div class="input-line password-field">
-    <input type="password" id="loginPassword" name="password" required>
-    <label>Password</label>
+            <div class="input-group password-group">
+                <input type="password" name="password" id="loginPassword" placeholder=" " required>
+                <label>Password</label>
+                <span class="toggle-password" onclick="togglePassword('loginPassword', this)">👁</span>
+            </div>
 
-    <span class="eye-icon"
-        onmousedown="showPassword('loginPassword')"
-        onmouseup="hidePassword('loginPassword')"
-        onmouseleave="hidePassword('loginPassword')"
-        ontouchstart="showPassword('loginPassword')"
-        ontouchend="hidePassword('loginPassword')">
-        👁
-    </span>
-</div>
-
-           <button type="submit" class="login-btn">SIGN IN</button>
-
-            <p class="forgot-text">Forgot Password</p>
-
-            <p class="bottom-text">
-                Don`t have an account?
-                <a href="register.php">Create</a>
-            </p>
+            <button type="submit" class="green-btn">SIGN IN</button>
         </form>
+
+        <p class="text-link1">Forgot Password</p>
+        <p class="text-link">
+            Don’t have an account?
+            <a href="register.php">Create</a>
+        </p>
     </div>
 
     <script src="../assets/script.js"></script>
 </body>
 </html>
+
