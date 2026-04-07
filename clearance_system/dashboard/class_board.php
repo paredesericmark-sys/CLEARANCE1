@@ -7,6 +7,18 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'teacher') {
     exit;
 }
 
+$teacher_id = $_SESSION['user_id'];
+
+/* Kunin ang profile photo ng teacher */
+$userStmt = $conn->prepare("SELECT profile_photo FROM users WHERE id = ? AND role = 'teacher'");
+$userStmt->bind_param("i", $teacher_id);
+$userStmt->execute();
+$userData = $userStmt->get_result()->fetch_assoc();
+
+$photo = !empty($userData['profile_photo'])
+    ? "../assets/uploads/profile/" . $userData['profile_photo']
+    : "../assets/southern.png";
+
 if (!isset($_GET['class_id'])) {
     die("Class not found.");
 }
@@ -62,7 +74,9 @@ $requests = $stmt->get_result();
 <div class="teacher-wrapper">
     <div class="teacher-sidebar">
         <div class="teacher-profile">
-            <div class="teacher-avatar">👤</div>
+            <div class="teacher-avatar">
+                <img src="<?php echo htmlspecialchars($photo); ?>" alt="Teacher Photo">
+            </div>
             <h3><?php echo htmlspecialchars($_SESSION['name']); ?></h3>
         </div>
 
@@ -116,16 +130,16 @@ $requests = $stmt->get_result();
                                         <span class="status-badge"><?php echo htmlspecialchars($row['status']); ?></span>
                                     </td>
                                     <td>
-                                      <select name="result[<?php echo $row['id']; ?>]">
-                                      <option value="">Select</option>
-                                      <option value="Passed" <?php echo ($row['result'] === 'Passed') ? 'selected' : ''; ?>>Passed</option>
-                                      <option value="Failed" <?php echo ($row['result'] === 'Failed') ? 'selected' : ''; ?>>Failed</option>
-                                      <option value="Incomplete" <?php echo ($row['result'] === 'Incomplete') ? 'selected' : ''; ?>>Incomplete</option>
-                            </select>
-                       </td>
-                    <td>
-    <input type="text" name="comment[<?php echo $row['id']; ?>]" value="<?php echo htmlspecialchars($row['comment']); ?>">
-</td>
+                                        <select name="result[<?php echo $row['id']; ?>]">
+                                            <option value="">Select</option>
+                                            <option value="Passed" <?php echo ($row['result'] === 'Passed') ? 'selected' : ''; ?>>Passed</option>
+                                            <option value="Failed" <?php echo ($row['result'] === 'Failed') ? 'selected' : ''; ?>>Failed</option>
+                                            <option value="Incomplete" <?php echo ($row['result'] === 'Incomplete') ? 'selected' : ''; ?>>Incomplete</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="comment[<?php echo $row['id']; ?>]" value="<?php echo htmlspecialchars($row['comment']); ?>">
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>

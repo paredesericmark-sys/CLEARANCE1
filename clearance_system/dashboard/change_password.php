@@ -16,6 +16,7 @@ if ($role === 'admin') {
 } else {
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
 }
+
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
@@ -24,7 +25,11 @@ if (!$user) {
     die("User not found.");
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+$photo = !empty($user['profile_photo'])
+    ? "../assets/uploads/profile/" . $user['profile_photo']
+    : "../assets/southern.png";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['current_password'])) {
     $current_password = md5($_POST['current_password']);
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
@@ -65,7 +70,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="student-wrapper">
     <div class="student-sidebar">
         <div class="student-profile">
-            <div class="student-avatar">👤</div>
+            <div class="student-avatar">
+                <img src="<?php echo htmlspecialchars($photo); ?>" alt="Profile Photo">
+            </div>
             <h3><?php echo htmlspecialchars($_SESSION['name']); ?></h3>
             <?php if ($role !== 'admin' && !empty($user['email'])): ?>
                 <p><?php echo htmlspecialchars($user['email']); ?></p>
@@ -110,12 +117,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="change-password-info-box">
-                <div class="change-profile-circle">👤</div>
+
+                <form action="upload_photo.php" method="POST" enctype="multipart/form-data" class="upload-photo-form">
+                    <label for="fileInput" class="upload-btn">✏️ UPLOAD</label>
+                    <input type="file" id="fileInput" name="profile_photo" accept="image/*" hidden>
+                </form>
+
+                <div class="change-profile-circle">
+                    <img src="<?php echo htmlspecialchars($photo); ?>" alt="Profile Photo">
+                </div>
+
                 <div class="change-user-info">
                     <p><strong>NAME:</strong><br><?php echo htmlspecialchars($_SESSION['name']); ?></p>
+
                     <?php if (!empty($user['email'])): ?>
                         <p><strong>EMAIL:</strong><br><?php echo htmlspecialchars($user['email']); ?></p>
                     <?php endif; ?>
+
                     <?php if ($role !== 'admin' && !empty($user['contact_number'])): ?>
                         <p><strong>Contact:</strong><br><?php echo htmlspecialchars($user['contact_number']); ?></p>
                     <?php endif; ?>
@@ -125,6 +143,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </div>
 </div>
+
+<script>
+const fileInput = document.getElementById("fileInput");
+if (fileInput) {
+    fileInput.addEventListener("change", function () {
+        this.form.submit();
+    });
+}
+</script>
 
 </body>
 </html>

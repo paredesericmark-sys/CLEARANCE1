@@ -9,6 +9,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
 
 $student_id = $_SESSION['user_id'];
 
+/* ✅ KUNIN PROFILE PHOTO */
+$user_stmt = $conn->prepare("SELECT profile_photo FROM users WHERE id = ?");
+$user_stmt->bind_param("i", $student_id);
+$user_stmt->execute();
+$user = $user_stmt->get_result()->fetch_assoc();
+
+$photo = !empty($user['profile_photo'])
+    ? "../assets/uploads/profile/" . $user['profile_photo']
+    : "../assets/southern.png";
+
+/* RESULT QUERY */
 $stmt = $conn->prepare("
     SELECT cr.id, cr.subject, cr.status, cr.result, cr.comment, cr.date_signed
     FROM class_requests cr
@@ -32,7 +43,12 @@ $results = $stmt->get_result();
 <div class="student-wrapper">
     <div class="student-sidebar">
         <div class="student-profile">
-            <div class="student-avatar">👤</div>
+
+            <!-- ✅ PROFILE IMAGE -->
+            <div class="student-avatar">
+                <img src="<?php echo htmlspecialchars($photo); ?>" alt="Student Photo">
+            </div>
+
             <h3><?php echo htmlspecialchars($_SESSION['name']); ?></h3>
         </div>
 

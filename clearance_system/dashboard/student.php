@@ -8,8 +8,24 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'student') {
 }
 
 $student_id = $_SESSION['user_id'];
+
+/* Kunin ang student info kasama ang profile photo */
+$user_stmt = $conn->prepare("SELECT firstname, lastname, email, profile_photo FROM users WHERE id = ? AND role = 'student'");
+$user_stmt->bind_param("i", $student_id);
+$user_stmt->execute();
+$user = $user_stmt->get_result()->fetch_assoc();
+
+if (!$user) {
+    die("Student not found.");
+}
+
 $student_name = $_SESSION['name'];
 
+$photo = !empty($user['profile_photo'])
+    ? "../assets/uploads/profile/" . $user['profile_photo']
+    : "../assets/southern.png";
+
+/* Kunin ang request cards */
 $stmt = $conn->prepare("
     SELECT cr.*, tc.subject as class_subject, tc.course as class_course, u.firstname, u.lastname
     FROM class_requests cr
@@ -37,7 +53,9 @@ $show_success = isset($_GET['success']) && $_GET['success'] == '1';
 <div class="student-wrapper">
     <div class="student-sidebar">
         <div class="student-profile">
-            <div class="student-avatar">👤</div>
+            <div class="student-avatar">
+                <img src="<?php echo htmlspecialchars($photo); ?>" alt="Student Photo">
+            </div>
             <h3><?php echo htmlspecialchars($student_name); ?></h3>
         </div>
 
@@ -118,5 +136,3 @@ $show_success = isset($_GET['success']) && $_GET['success'] == '1';
 <script src="../assets/script.js"></script>
 </body>
 </html>
-
-
